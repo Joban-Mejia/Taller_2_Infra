@@ -48,7 +48,7 @@ class Auto extends Thread {
         while (!estacionamiento.entrar()) {
             System.out.println("Auto " + id + " intenta estacionar pero el estacionamiento está lleno. Reintentando...");
             try {
-                Thread.sleep(100); // Espera semi-activa
+                Thread.sleep(2000); // Espera semi-activa
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
