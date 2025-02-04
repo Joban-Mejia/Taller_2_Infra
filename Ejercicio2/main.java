@@ -45,15 +45,20 @@ class Auto extends Thread {
         System.out.println("Auto " + id + " llega al estacionamiento.");
 
 
-        // Espera activa hasta que pueda entrar
+        // Espera semi-activa usando yield() -- Implementación 2
         while (!estacionamiento.entrar()) {
             System.out.println("Auto " + id + " intenta estacionar pero el estacionamiento está lleno. Reintentando...");
-            try {
-                Thread.sleep(10000); // Espera semi-activa
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+            Thread.yield();}
+
+        // Espera activa hasta que pueda entrar -- Implementación 1 
+        //while (!estacionamiento.entrar()) {
+            //System.out.println("Auto " + id + " intenta estacionar pero el estacionamiento está lleno. Reintentando...");
+            //try {
+                //Thread.sleep(10000); // Espera semi-activa
+            //} catch (InterruptedException e) {
+                //e.printStackTrace();
+            //}
+       // }
 
         System.out.println("Auto " + id + " ha estacionado exitosamente. Espacios disponibles: " + estacionamiento.getEspaciosDisponibles());
 
