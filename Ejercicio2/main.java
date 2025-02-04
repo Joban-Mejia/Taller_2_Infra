@@ -44,23 +44,26 @@ class Auto extends Thread {
         Random random = new Random();
         System.out.println("Auto " + id + " llega al estacionamiento.");
 
+        /* Espera activa hasta que pueda entrar -- Implementación 1
+        while (!estacionamiento.entrar()) {
+            System.out
+                    .println("Auto " + id + " intenta estacionar pero el estacionamiento está lleno. Reintentando...");
+            try {
+                Thread.sleep(10000); // Espera semi-activa
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } */
 
         // Espera semi-activa usando yield() -- Implementación 2
         while (!estacionamiento.entrar()) {
-            System.out.println("Auto " + id + " intenta estacionar pero el estacionamiento está lleno. Reintentando...");
-            Thread.yield();}
+            System.out
+                    .println("Auto " + id + " intenta estacionar pero el estacionamiento está lleno. Reintentando...");
+            Thread.yield();
+        }
 
-        // Espera activa hasta que pueda entrar -- Implementación 1 
-        //while (!estacionamiento.entrar()) {
-            //System.out.println("Auto " + id + " intenta estacionar pero el estacionamiento está lleno. Reintentando...");
-            //try {
-                //Thread.sleep(10000); // Espera semi-activa
-            //} catch (InterruptedException e) {
-                //e.printStackTrace();
-            //}
-       // }
-
-        System.out.println("Auto " + id + " ha estacionado exitosamente. Espacios disponibles: " + estacionamiento.getEspaciosDisponibles());
+        System.out.println("Auto " + id + " ha estacionado exitosamente. Espacios disponibles: "
+                + estacionamiento.getEspaciosDisponibles());
 
         // Simula el tiempo que el auto está estacionado
         try {
@@ -71,7 +74,8 @@ class Auto extends Thread {
 
         // El auto sale del estacionamiento
         estacionamiento.salir();
-        System.out.println("Auto " + id + " ha salido del estacionamiento. Espacios disponibles: " + estacionamiento.getEspaciosDisponibles());
+        System.out.println("Auto " + id + " ha salido del estacionamiento. Espacios disponibles: "
+                + estacionamiento.getEspaciosDisponibles());
     }
 }
 
@@ -84,5 +88,19 @@ public class Main {
             Auto auto = new Auto(i, estacionamiento);
             auto.start();
         }
+
+    /*
+        Observaciones sobre las diferencias en la salida:
+
+        Implementación 1 (espera activa con sleep(10000)):
+        Los autos que encuentran el estacionamiento lleno esperan 10 segundos antes de intentar entrar de nuevo.
+        Entonces, hay periodos donde no se registran intentos de estacionamiento, por este motivo tardan más en estacionar ya que el reintento es fijo.
+
+        - Implementación 2 (espera semi-activa con yield):
+        Los autos reintentan estacionar constantemente, ya que los Threads no estan bloqueados y no tienen un tiempo de espera definido, lo que ocaciona mensajes más frecuentes.
+        de "Auto X intenta estacionar..." en la consola, mostrando intentos más frecuentes.
+        Los autos aprovechan los espacios disponibles más rápidamente, reduciendo el tiempo de espera.
+        En conclusión, la utilización de `yield()` resulta más eficiente en el uso de los espacios del estacionamiento.
+     */
     }
 }
