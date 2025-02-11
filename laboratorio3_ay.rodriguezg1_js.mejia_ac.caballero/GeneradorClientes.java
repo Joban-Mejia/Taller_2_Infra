@@ -21,7 +21,7 @@ public class GeneradorClientes implements Runnable {
             uid++;
 
             try {
-                Thread.sleep(random.nextInt(501)); // Espera aleatoria entre 0 y 500 ms
+                Thread.sleep(random.nextInt(5000)); // Espera aleatoria entre 0 y 500 ms
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
