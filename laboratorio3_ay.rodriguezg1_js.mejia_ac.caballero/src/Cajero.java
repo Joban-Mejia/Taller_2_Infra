@@ -1,6 +1,6 @@
 public class Cajero implements Runnable {
-    private final int id;
-    private final Fila fila;
+    private int id;
+    private Fila fila;
     private double factorDeCansancio = 1.0;
 
     public Cajero(int id, Fila fila) {
@@ -11,31 +11,24 @@ public class Cajero implements Runnable {
     @Override
     public void run() {
         while (true) {
-            Cliente cliente = fila.obtenerCliente();
-            if (cliente == null) {
-                break;
-            }
+            int[] cliente = fila.retirarCliente();
+            int clienteId = cliente[0];
+            int tiempoBase = cliente[1];
 
-            int tiempoBase = cliente.getTiempoBase();
-            long tiempoCalculado = (long) (tiempoBase * factorDeCansancio);
+            System.out.println("Cajero " + id + " comienza a procesar al cliente " + clienteId);
 
-            System.out.println("Cajero " + id + " procesando Cliente " + cliente.getId() +
-                    " | Tiempo Base: " + tiempoBase + " ms | Factor Cansancio: " + factorDeCansancio +
-                    " | Tiempo Total: " + tiempoCalculado + " ms");
-
-            // Simular el tiempo de procesamiento
+            int tiempoCalculado = (int) (tiempoBase * factorDeCansancio);
             try {
-                Thread.sleep(tiempoCalculado);
+                Thread.sleep(tiempoCalculado); // Simular el tiempo de procesamiento
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            // Actualizar el factor de cansancio
-            factorDeCansancio += (0.0001 * tiempoBase);
+            factorDeCansancio += 0.0001 * tiempoBase; // Aumentar el factor de cansancio
 
-            System.out.println("Cajero " + id + " ha terminado con Cliente " + cliente.getId());
+            System.out.println("Cajero " + id + " ha terminado de procesar al cliente " + clienteId +
+                    " - Tiempo base: " + tiempoBase + " ms, Factor de cansancio: " + factorDeCansancio +
+                    ", Tiempo calculado: " + tiempoCalculado + " ms");
         }
-
-        System.out.println("Cajero " + id + " ha finalizado su turno.");
     }
 }

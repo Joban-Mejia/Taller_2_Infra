@@ -1,24 +1,22 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Fila {
-    private final Queue<Cliente> filaClientes = new LinkedList<>();
+    private List<int[]> filaClientes = new ArrayList<>();
 
-    public synchronized void agregarCliente(Cliente cliente) {
+    public synchronized void agregarCliente(int[] cliente) {
         filaClientes.add(cliente);
-        System.out.println("Cliente añadido: ID " + cliente.getId() + " | Tiempo Base: " + cliente.getTiempoBase() + " ms");
-        notify(); // Notifica a los cajeros que hay clientes
+        notifyAll(); // Notificar a los cajeros que hay un nuevo cliente
     }
 
-    public synchronized Cliente obtenerCliente() {
+    public synchronized int[] retirarCliente() {
         while (filaClientes.isEmpty()) {
             try {
-                System.out.println("Cajero esperando: No hay clientes en la fila.");
-                wait();
+                wait(); // Esperar si no hay clientes
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        return filaClientes.poll();
+        return filaClientes.remove(0);
     }
 }

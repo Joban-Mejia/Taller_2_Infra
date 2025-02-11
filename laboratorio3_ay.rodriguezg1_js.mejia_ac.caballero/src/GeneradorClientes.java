@@ -1,26 +1,26 @@
 import java.util.Random;
 
 public class GeneradorClientes implements Runnable {
-    private final Fila fila;
-    private final int numeroDeClientes;
-    private int uid = 1; // Identificador único de clientes
+    private Fila fila;
+    private int uid = 1;
+    private Random random = new Random();
 
-    public GeneradorClientes(Fila fila, int numeroDeClientes) {
+    public GeneradorClientes(Fila fila) {
         this.fila = fila;
-        this.numeroDeClientes = numeroDeClientes;
     }
 
     @Override
     public void run() {
-        Random random = new Random();
-        for (int i = 0; i < numeroDeClientes; i++) {
-            int tiempoBase = random.nextInt(2001); // Entre 0 y 2000 ms
-            Cliente cliente = new Cliente(uid++, tiempoBase);
+        while (true) {
+            int tiempoProcesamiento = random.nextInt(2001); // Tiempo base entre 0 y 2000 ms
+            int[] cliente = {uid, tiempoProcesamiento};
             fila.agregarCliente(cliente);
+            System.out.println("Cliente creado - ID: " + uid + ", Tiempo base: " + tiempoProcesamiento + " ms");
 
-            // Esperar entre 0 y 500 ms antes de generar otro cliente
+            uid++;
+
             try {
-                Thread.sleep(random.nextInt(501));
+                Thread.sleep(random.nextInt(501)); // Espera aleatoria entre 0 y 500 ms
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
