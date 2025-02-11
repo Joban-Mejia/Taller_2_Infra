@@ -11,18 +11,19 @@ public class Fila {
     }
 
     public synchronized int[] retirarCliente() {
-        while (filaClientes.isEmpty() && !generadorTerminado) {
+        while (filaClientes.isEmpty()) {
+            if (generadorTerminado) {
+                return null; // Si el generador terminó y no hay más clientes, salir
+            }
             try {
-                wait(); // Esperar si no hay clientes y el generador no ha terminado
+                wait(); // Esperar si no hay clientes
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        if (filaClientes.isEmpty() && generadorTerminado) {
-            return null; // Si no hay más clientes y el generador terminó, retornar null
-        }
         return filaClientes.remove(0);
     }
+    
     public synchronized boolean estaVacia() {
         return filaClientes.isEmpty();}
     public synchronized boolean isGeneradorTerminado() {
@@ -32,6 +33,4 @@ public class Fila {
 
     public synchronized void setGeneradorTerminado() {
         this.generadorTerminado = true;
-        notifyAll(); // Notificar a los cajeros que el generador terminó
-    }
-}
+        notifyAll(); }}

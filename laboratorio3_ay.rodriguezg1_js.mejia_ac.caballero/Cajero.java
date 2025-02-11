@@ -9,31 +9,31 @@ public class Cajero implements Runnable {
     }
 
     @Override
-    public void run() {
-        while (!fila.estaVacia() || !fila.isGeneradorTerminado()){
-            int[] cliente = fila.retirarCliente();
-            if (cliente == null) {
-                System.out.println("Cajero " + id + " ha terminado de procesar clientes.");
-                break; // Si no hay más clientes, detener el cajero
-            }
-
-            int clienteId = cliente[0];
-            int tiempoBase = cliente[1];
-
-            System.out.println("Cajero " + id + " comienza a procesar al cliente " + clienteId);
-
-            int tiempoCalculado = (int) (tiempoBase * factorDeCansancio);
-            try {
-                Thread.sleep(tiempoCalculado); // Simular el tiempo de procesamiento
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            factorDeCansancio += 0.0001 * tiempoBase; // Aumentar el factor de cansancio
-
-            System.out.println("Cajero " + id + " ha terminado de procesar al cliente " + clienteId +
-                    " - Tiempo base: " + tiempoBase + " ms, Factor de cansancio: " + factorDeCansancio +
-                    ", Tiempo calculado: " + tiempoCalculado + " ms");
+public void run() {
+    while (true) {
+        int[] cliente = fila.retirarCliente();
+        if (cliente == null) { // Si ya no hay clientes y el generador terminó, salir
+            System.out.println("Cajero " + id + " ha terminado de procesar clientes.");
+            break;
         }
+
+        int clienteId = cliente[0];
+        int tiempoBase = cliente[1];
+
+        System.out.println("Cajero " + id + " comienza a procesar al cliente " + clienteId);
+
+        int tiempoCalculado = (int) (tiempoBase * factorDeCansancio);
+        try {
+            Thread.sleep(tiempoCalculado); // Simular el tiempo de procesamiento
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        factorDeCansancio += 0.0001 * tiempoBase; // Aumentar el factor de cansancio
+
+        System.out.println("Cajero " + id + " ha terminado de procesar al cliente " + clienteId +
+                " - Tiempo base: " + tiempoBase + " ms, Factor de cansancio: " + factorDeCansancio +
+                ", Tiempo calculado: " + tiempoCalculado + " ms");
     }
-}
+}}
+ 
