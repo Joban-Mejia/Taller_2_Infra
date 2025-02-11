@@ -12,7 +12,7 @@ public class Cajero implements Runnable {
 public void run() {
     while (true) {
         int[] cliente = fila.retirarCliente();
-        if (cliente == null) { // Si ya no hay clientes y el generador terminó, salir
+        if (cliente == null) { 
             System.out.println("Cajero " + id + " ha terminado de procesar clientes.");
             break;
         }
@@ -24,13 +24,12 @@ public void run() {
 
         int tiempoCalculado = (int) (tiempoBase * factorDeCansancio);
         try {
-            Thread.sleep(tiempoCalculado); // Simular el tiempo de procesamiento
+            Thread.sleep(tiempoCalculado); 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        factorDeCansancio += 0.0001 * tiempoBase; // Aumentar el factor de cansancio
-
+        factorDeCansancio += 0.0001 * tiempoBase;
         System.out.println("Cajero " + id + " ha terminado de procesar al cliente " + clienteId +
                 " - Tiempo base: " + tiempoBase + " ms, Factor de cansancio: " + factorDeCansancio +
                 ", Tiempo calculado: " + tiempoCalculado + " ms");
