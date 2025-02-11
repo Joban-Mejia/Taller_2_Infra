@@ -12,6 +12,11 @@ public class Cajero implements Runnable {
     public void run() {
         while (true) {
             int[] cliente = fila.retirarCliente();
+            if (cliente == null) {
+                System.out.println("Cajero " + id + " ha terminado de procesar clientes.");
+                break; // Si no hay más clientes, detener el cajero
+            }
+
             int clienteId = cliente[0];
             int tiempoBase = cliente[1];
 

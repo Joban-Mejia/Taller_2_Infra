@@ -11,6 +11,16 @@ public class Main {
         }
 
         // Iniciar el generador de clientes
-        new Thread(generador).start();
+        Thread generadorThread = new Thread(generador);
+        generadorThread.start();
+
+        // Esperar a que el generador termine
+        try {
+            generadorThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Simulación terminada.");
     }
 }
