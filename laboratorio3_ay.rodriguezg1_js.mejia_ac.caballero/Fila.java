@@ -23,6 +23,12 @@ public class Fila {
         }
         return filaClientes.remove(0);
     }
+    public synchronized boolean estaVacia() {
+        return filaClientes.isEmpty();}
+    public synchronized boolean isGeneradorTerminado() {
+        return generadorTerminado;}
+    
+
 
     public synchronized void setGeneradorTerminado() {
         this.generadorTerminado = true;

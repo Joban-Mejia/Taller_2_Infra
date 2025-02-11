@@ -10,7 +10,7 @@ public class Cajero implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (!fila.estaVacia() || !fila.isGeneradorTerminado()){
             int[] cliente = fila.retirarCliente();
             if (cliente == null) {
                 System.out.println("Cajero " + id + " ha terminado de procesar clientes.");
